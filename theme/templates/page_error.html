@@ -1,0 +1,9 @@
+{% extends "page.html" %}
+{% block content_header %}
+			<header>
+				<h1 property="name headline">{{ page.title }}</h1>
+{% if page.summary %}
+				<p property="description">{{ page.summary|striptags }}</p>
+{% endif %}
+			</header>
+{% endblock %}

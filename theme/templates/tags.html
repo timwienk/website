@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Tags - {{ SITENAME }}{% endblock %}
+{% block pagetype %}CollectionPage{% endblock %}
+{% block content %}
+		<section property="mainEntity" typeof="WebPageElement" class="container">
+			<header>
+				<h1 property="name headline">Tags</h1>
+				<p property="description">Labels, badges, buttons</p>
+			</header>
+			<ul typeof="ItemList" class="{% if tags|length < 2 %}stub {% endif %}section">
+{% for category, articles in tags|sort %}
+				<li property="itemListElement" typeof="Thing">
+					<span property="name" class="name"><a property="url" href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a></span><span class="separator">,</span>
+					<span class="article-count">{{ articles|count }} articles</span>
+				</li>
+{% endfor %}
+			</ul>
+		</section>
+{% endblock %}

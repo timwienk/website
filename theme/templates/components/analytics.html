@@ -1,0 +1,72 @@
+{% if GOOGLE_ANALYTICS %}
+	<script type="text/javascript">/*<![CDATA[*/
+		(function(key){
+			var fn = window[key] || function(){ (fn.q = fn.q || []).push(arguments); };
+			fn.l = 1 * new Date();
+
+			window.GoogleAnalyticsObject = key;
+			window[key] = fn;
+
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = 'https://www.google-analytics.com/analytics.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})('ga');
+
+{% if GOOGLE_ANALYTICS_ID_SCRIPT %}
+		(function(){
+			var request;
+			try {
+				request = new XMLHttpRequest();
+			} catch (error){}
+			try {
+				request = new ActiveXObject('MSXML2.XMLHTTP');
+			} catch (error){}
+			try {
+				request = new ActiveXObject('Microsoft.XMLHTTP');
+			} catch (error){}
+
+			request.open('GET', '{{ GOOGLE_ANALYTICS_ID_SCRIPT }}', true);
+			request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+			request.onreadystatechange = function(){
+				if (request.readyState == 4) {
+					request.onreadystatechange = function(){};
+					clientId = request.responseText.replace(/\r?\n/, '');
+					ga('create', '{{ GOOGLE_ANALYTICS }}', {'storage': 'none', 'clientId': clientId});
+					ga('send', 'pageview');
+				}
+			}
+
+			request.send();
+
+			return request;
+		})();
+{% else %}
+		ga('create', '{{ GOOGLE_ANALYTICS }}', 'auto');
+		ga('send', 'pageview');
+{% endif %}
+	//]]></script>
+{% endif %}
+{% if PIWIK_URL and PIWIK_SITE_ID %}
+	<script type="text/javascript">/*<![CDATA[*/
+		var _paq = _paq || [];
+
+		(function(){
+			var u = (('https:' == document.location.protocol) ? 'https' : 'http') + '://{% if PIWIK_SSL_URL %}{{ PIWIK_SSL_URL }}{% else %}{{ PIWIK_URL }}{% endif %}/';
+
+			_paq.push(
+				['trackPageView'],
+				['enableLinkTracking'],
+				['setTrackerUrl', u+'piwik.php'],
+				['setSiteId', '{{ PIWIK_SITE_ID }}']
+			);
+
+			var pa = document.createElement('script'); pa.type = 'text/javascript'; pa.async = true; pa.defer = true;
+			pa.src = u+'piwik.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(pa, s);
+		})();
+	//]]></script>
+{% endif %}
+

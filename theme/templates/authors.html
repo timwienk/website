@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Authors - {{ SITENAME }}{% endblock %}
+{% block pagetype %}CollectionPage{% endblock %}
+{% block content %}
+		<section property="mainEntity" typeof="WebPageElement" class="container">
+			<header>
+				<h1 property="name headline">Authors</h1>
+				<p property="description">People who write things, and articles too</p>
+			</header>
+			<ul typeof="ItemList" class="{% if authors|length < 2 %}stub {% endif %}section">
+{% for author, articles in authors|sort %}
+				<li property="itemListElement" typeof="Person">
+					<span property="name" class="name"><a property="url" href="{{ SITEURL }}/{{ author.url }}">{{ author }}</a></span><span class="separator">,</span>
+					<span class="article-count">{{ articles|count }} articles</span>
+				</li>
+{% endfor %}
+			</ul>
+		</section>
+{% endblock %}

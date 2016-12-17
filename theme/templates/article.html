@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title|striptags }} - {{ SITENAME }}{% endblock %}
+{% block pagetype %}ItemPage{% endblock %}
+{% block content %}
+		<article property="mainEntity" typeof="Article" class="container">
+			<meta property="inLanguage" content="{{ article.lang }}" />
+			<header>
+				<h1 property="name headline"><a property="url mainEntityOfPage" href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h1>
+				<p>
+					<span property="author creator copyrightHolder">{{ article.authors|join(', ') }}</span> —
+					<time property="datePublished dateCreated dateModified" datetime="{{ article.date.date().isoformat() }}">{{ article.locale_date }}</time>
+				</p>
+			</header>
+{% if article.summary %}
+			<section property="description" class="summary">
+				{{ article.summary }}
+			</section>
+{% endif %}
+{% if article.content %}
+			<div property="articleBody">
+
+{{ article.content }}
+
+			</div>
+{% endif %}
+{% if article.prev_article or article.next_article %}
+			<aside class="articles" typeof="ItemList">
+				<section{% if article.prev_article %} property="itemListElement" typeof="Article"{% endif %}>
+{% if article.prev_article %}
+					<meta property="inLanguage" content="{{ article.prev_article.lang }}" />
+					<meta property="author creator copyrightHolder" content="{{ article.prev_article.authors|join(', ')|escape }}" />
+					<h2><span>{% if lang == 'nl' %}Vorige artikel{% else %}Previous article{% endif %}</span></h2>
+					<ul class="stub section">
+						<li>
+							<time property="datePublished dateCreated dateModified" class="date" datetime="{{ article.prev_article.date.date().isoformat() }}">{{ article.prev_article.locale_date }}</time><span class="separator">,</span>
+							<span property="name headline" class="title"><a property="url mainEntityOfPage" href="{{ SITEURL }}/{{ article.prev_article.url }}">{{ article.prev_article.title }}</a></span>
+						</li>
+					</ul>
+{% endif %}
+				</section>
+				<section{% if article.next_article %} property="itemListElement" typeof="Article"{% endif %}>
+{% if article.next_article %}
+					<meta property="inLanguage" content="{{ article.next_article.lang }}" />
+					<meta property="author creator copyrightHolder" content="{{ article.next_article.authors|join(', ')|escape }}" />
+					<h2><span>{% if lang == 'nl' %}Volgende artikel{% else %}Next article{% endif %}</span></h2>
+					<ul class="stub section">
+						<li>
+							<time property="datePublished dateCreated dateModified" class="date" datetime="{{ article.next_article.date.date().isoformat() }}">{{ article.next_article.locale_date }}</time><span class="separator">,</span>
+							<span property="name headline" class="title"><a property="url mainEntityOfPage" href="{{ SITEURL }}/{{ article.next_article.url }}">{{ article.next_article.title }}</a></span>
+						</li>
+					</ul>
+{% endif %}
+				</section>
+			</aside>
+{% endif %}
+{#
+			<aside class="comments">
+				<section>
+{% if article.comments %}
+					<h2><span>{% if lang == 'nl' %}Reacties{% else %}Comments{% endif %}</span></h2>
+					<ul class="stub section">
+{% for comment in article.comments %}
+						<li>
+							<time class="date" datetime="{{ comment.date.date().isoformat() }}">{{ comment.locale_date }}</time>
+							<span class="separator">-</span>
+{% if comment.url %}
+							<a class="author" href="{{ comment.url|escape }}" target="_blank">{{ comment.author }}</a>
+{% else %}
+							<span class="author">{{ comment.author }}</span>
+{% endif %}
+							<span class="separator">:</span>
+							<div class="content">
+								{{ comment.content }}
+							</div>
+						</li>
+{% endfor %}
+					</ul>
+{% endif %}
+					<h2><span>{% if lang == 'nl' %}Plaats een reactie{% else %}Post a comment{% endif %}</span></h2>
+					<form action="{{ SITEURL }}/{{ article.url }}/comment">
+						<div>
+							<label for="comment_name">{% if lang == 'nl' %}Naam{% else %}Name{% endif %}*</label>
+							<input type="text" id="comment_name" name="name" />
+						</div>
+						<div>
+							<label for="comment_email">{% if lang == 'nl' %}E-mail{% else %}Email{% endif %}*</label>
+							<input type="email" id="comment_email" name="email" />
+						</div>
+						<div>
+							<label for="comment_website">Website</label>
+							<input type="text" id="comment_website" name="website" />
+						</div>
+						<div>
+							<label for="comment_content">{% if lang == 'nl' %}Reactie{% else %}Comment{% endif %}*</label>
+							<textarea id="comment_content" name="content"></textarea>
+						</div>
+						<div>
+							<button type="submit">{% if lang == 'nl' %}Versturen{% else %}Submit{% endif %}</button>
+							<span>{% if lang == 'nl' %}Velden gemarkeerd met een * zijn verplicht.{% else %}Fields marked with a * are required.{% endif %}</span>
+						</div>
+					</form>
+				</section>
+			</aside>
+#}
+		</article>
+{% endblock %}

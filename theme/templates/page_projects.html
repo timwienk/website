@@ -1,0 +1,22 @@
+{% extends "page.html" %}
+{% block pagetype %}CollectionPage{% endblock %}
+{% block content_footer %}
+{% if github_project_contributions %}
+			<ul typeof="ItemList" class="{% if github_project_contributions|length < 2 %}stub {% endif %}section">
+{% for project in github_project_contributions %}
+{% set additions = '{0:,}'.format(project.stats['additions']) %}{% set deletions = '{0:,}'.format(project.stats['deletions']) %}
+{% if lang == 'nl' %}{% set additions = additions.replace(',', '.') %}{% set deletions = deletions.replace(',', '.') %}{% endif %}
+				<li property="itemListElement" typeof="SoftwareSourceCode">
+					<span property="name" class="title"><a property="codeRepository" href="https://github.com/{% if project.parent %}{{ project.parent }}{% else %}{{ project.repository }}{% endif %}">{{ project.title }}</a></span><span class="separator">,</span>
+{% if project.type %}
+					<span property="programmingLanguage" class="type">{{ project.type }}</span>
+					<span>-</span>
+{% endif %}
+					<span class="additions">{{ additions }} ++</span>
+					<span>/</span>
+					<span class="deletions">{{ deletions }} --</span>
+				</li>
+{% endfor %}
+			</ul>
+{% endif %}
+{% endblock %}

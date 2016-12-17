@@ -1,0 +1,18 @@
+{% macro translations_for(article) %}
+{% if article.translations %}
+			<p id="languages-description" class="description">{% if lang == 'nl' %}Beschikbare talen{% else %}Available languages{% endif %}:</p>
+			<ul id="language" aria-describedby="languages-description">
+{% for translation in article.translations|sort(attribute='lang') %}
+{% if translation.lang < article.lang %}
+				<li><a rel="alternate" hreflang="{{ translation.lang }}" href="{{ SITEURL }}/{{ translation.url }}" title="{{ translation.title|escape }}">{{ translation.lang }}</a></li>
+{% endif %}
+{% endfor %}
+				<li property="inLanguage" class="active"><a rel="bookmark" hreflang="{{ article.lang }}" href="{{ SITEURL }}/{{ article.url }}" title="{{ article.title|escape }}">{{ article.lang }}</a></li>
+{% for translation in article.translations|sort(attribute='lang') %}
+{% if translation.lang > article.lang %}
+				<li><a rel="alternate" hreflang="{{ translation.lang }}" href="{{ SITEURL }}/{{ translation.url }}" title="{{ translation.title|escape }}">{{ translation.lang }}</a></li>
+{% endif %}
+{% endfor %}
+			</ul>
+{% endif %}
+{% endmacro %}

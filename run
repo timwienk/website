@@ -1,0 +1,43 @@
+#!/home/tim/website/bin/python
+# -*- coding: utf-8 -*-
+import os
+import re
+import sys
+import pelican
+
+
+def parse_path_metadata(source_path, settings=None, process=None):
+	metadata = {}
+	dirname, basename = os.path.split(source_path)
+	base, ext = os.path.splitext(basename)
+	subdir = os.path.basename(dirname)
+	if settings:
+		checks = []
+		for key, data in [('FILENAME_METADATA', base),
+						  ('PATH_METADATA', source_path)]:
+			checks.append((settings.get(key, None), data))
+		if settings.get('USE_FOLDER_AS_CATEGORY', None):
+			checks.append(('(?P<category>.*)', subdir))
+		for regexp, data in checks:
+			if regexp and data:
+				match = re.match(regexp, data)
+				if match:
+					# .items() for py3k compat.
+					for k, v in match.groupdict().items():
+						k = k.lower()  # metadata must be lowercase
+						if k not in metadata and v is not None:
+							if process:
+								v = process(k, v)
+							metadata[k] = v
+	return metadata
+
+pelican.readers.parse_path_metadata = parse_path_metadata
+
+
+if __name__ == '__main__':
+	directory = os.path.dirname(os.path.realpath(__file__))
+	if directory != os.getcwd():
+		os.chdir(directory)
+
+	sys.argv[0] = 'pelican'
+	sys.exit(pelican.main())

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block pagetype %}CollectionPage{% endblock %}
+{% block content %}
+		<section property="mainEntity" typeof="WebPageElement" class="container">
+{% if articles %}
+			<article typeof="Article">
+{% for article in articles_page.object_list %}
+{% if loop.first and not articles_page.has_previous() %}
+				<header>
+					<h1 property="name headline"><a property="url" href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h1>
+					<p>
+						<span>{{ article.authors|join(', ') }}</span> —
+						<time datetime="{{ article.date.date().isoformat() }}">{{ article.locale_date }}</time>
+					</p>
+				</header>
+{% if article.summary %}
+				<section property="description" class="summary">
+					{{ article.summary }}
+				</section>
+{% endif %}
+				<p>
+					<a property="url mainEntityOfPage" href="{{ SITEURL }}/{{ article.url }}" title="{{ article.title }}">Read more</a></h1>
+				</p>
+{% if loop.length > 1 %}
+			</article>
+			<article property="mainEntity" typeof="WebPageElement">
+				<header>
+					<h1>Other articles</h1>
+					<p>Still good, but not as fresh as the previous one</p>
+				</header>
+				<ul class="{% if loop.length < 3 %}stub {% endif %}section">
+{% endif %}
+{% else %}
+{% if loop.first %}
+				<ul class="{% if loop.length < 2 %}stub {% endif %}section">
+{% endif %}
+					<li>
+						<span class="date">{{ article.locale_date }}</span><span class="separator">,</span>
+						<a class="title" href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
+					</li>
+{% endif %}
+{% if loop.last %}
+{% if loop.length > 1 or articles_page.has_other_pages() %}
+				</ul>
+{% if articles_page.has_other_pages() %}
+{% include 'components/pagination.html' %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+			</article>
+{% else %}
+			<article property="mainEntity" typeof="WebPageElement">
+				<header>
+					<h1>Pages</h1>
+					<p>Things you will find on my website</p>
+				</header>
+				<ul class="{% if pages|length < 2 %}stub {% endif %}section">
+{% for page in pages %}
+					<li>
+						<span class="title">{{ page.title }}</span><span class="separator">,</span>
+						<a class="location" href="{{ SITEURL }}/{{ page.url }}">/{{ page.url }}</a>
+					</li>
+{% endfor %}
+				</ul>
+			</article>
+{% endif %}
+		</section>
+{% endblock content %}

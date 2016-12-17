@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Categories - {{ SITENAME }}{% endblock %}
+{% block pagetype %}CollectionPage{% endblock %}
+{% block content %}
+		<section property="mainEntity" typeof="WebPageElement" class="container">
+			<header>
+				<h1 property="name headline">Categories</h1>
+				<p property="description">Little boxes with articles</p>
+			</header>
+			<ul typeof="ItemList" class="{% if categories|length < 2 %}stub {% endif %}section">
+{% for category, articles in categories %}
+				<li property="itemListElement" typeof="Thing">
+					<span property="name" class="name"><a property="url" href="{{ SITEURL }}/{{ category.url }}">{{ category }}</a></span><span class="separator">,</span>
+					<span class="article-count">{{ articles|count }} articles</span>
+				</li>
+{% endfor %}
+			</ul>
+		</section>
+{% endblock %}

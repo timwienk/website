@@ -1,0 +1,49 @@
+{% extends "page.html" %}
+{% set contenttag = 'article' %}
+{% block title %}{{ SITENAME }}{% endblock %}
+{% block content_footer %}
+{% if dates %}
+			<aside class="articles" typeof="ItemList">
+{% for article in dates %}
+{% if loop.first %}
+{% if article.lang == lang %}
+				<section property="itemListElement" typeof="Article">
+					<meta property="inLanguage" content="{{ article.lang }}" />
+					<meta property="author creator copyrightHolder" content="{{ article.authors|join(', ')|escape }}" />
+					<h2><span>{% if lang == 'nl' %}Laatste artikel{% else %}Latest article{% endif %}</span></h2>
+					<p>
+						<a property="url mainEntityOfPage" href="{{ SITEURL }}/{{ article.url }}">
+							<time property="datePublished dateCreated dateModified" class="date" datetime="{{ article.date.date().isoformat() }}">{{ article.locale_date }}</time>,
+							<span property="name headline">{{ article.title }}</span>.
+						</a>
+						<span property="description">{{ article.summary|striptags }}</span>
+					</p>
+				</section>
+{% elif article.translations %}
+{% for translation in article.translations %}
+{% if translation.lang == lang %}
+				<section property="itemListElement" typeof="Article">
+					<meta property="inLanguage" content="{{ translation.lang }}" />
+					<meta property="author creator copyrightHolder" content="{{ translation.authors|join(', ')|escape }}" />
+					<h2><span>{% if lang == 'nl' %}Laatste artikel{% else %}Latest article{% endif %}</span></h2>
+					<p>
+						<a property="url mainEntityOfPage" href="{{ SITEURL }}/{{ translation.url }}">
+							<time property="datePublished dateCreated dateModified" class="date" datetime="{{ translation.date.date().isoformat() }}">{{ translation.locale_date }}</time>,
+							<span property="name headline">{{ translation.title }}</span>.
+						</a>
+						<span property="description">{{ translation.summary|striptags }}</span>
+					</p>
+				</section>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{#
+				<section>
+					<h2><span>{% if lang == 'nl' %}Laatste sociale bericht{% else %}Latest social message{% endif %}</span></h2>
+				</section>
+#}
+			</aside>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,118 @@
+{% if article %}{% set lang = article.lang %}{% elif page %}{% set lang = page.lang %}{% else %}{% set lang = DEFAULT_LANG %}{% endif %}
+<!DOCTYPE html>
+<html lang="{{ lang }}" vocab="http://schema.org/" prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#{% if FACEBOOK_USER %} fb: http://ogp.me/ns/fb#{% endif %}">
+<head>
+	<meta charset="utf-8" />
+	<title>{% block title %}{{ SITENAME }}{%endblock%}</title>
+{% if article %}
+{% if article.description %}
+	<meta name="description" content="{{ article.description|truncate|escape }}" />
+{% else %}
+	<meta name="description" content="{{ (article.title ~ '. ' ~ article.summary|striptags ~ '. ' ~ article.content|replace('</h2>', ':')|striptags)|truncate|escape }}" />
+{% endif %}
+{% elif page %}
+{% if page.description %}
+	<meta name="description" content="{{ page.description|truncate|escape }}" />
+{% else %}
+	<meta name="description" content="{{ (page.title ~ '. ' ~ page.summary|striptags ~ '. ' ~ page.content|replace('</h2>', ':')|striptags)|truncate|escape }}" />
+{% endif %}
+{% endif %}
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0" />
+	<meta name="application-name" content="Tim.Wienk.name" />
+	<meta name="msapplication-TileColor" content="#ffffff" />
+	<meta name="msapplication-TileImage" content="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/mstile-144x144.png" />
+	<meta name="msapplication-square70x70logo" content="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/mstile-70x70.png" />
+	<meta name="msapplication-square150x150logo" content="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/mstile-150x150.png" />
+	<meta name="msapplication-wide310x150logo" content="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/mstile-310x150.png" />
+	<meta name="msapplication-square310x310logo" content="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/mstile-310x310.png" />
+{% import 'macros/social_meta.html' as social_meta with context %}
+{% if article %}{{ social_meta.social_meta_for(article) }}{% elif page %}{{ social_meta.social_meta_for(page) }}{% endif %}
+{% import 'macros/links.html' as links with context %}
+{% if article %}{{ links.links_for(article) }}{% elif page %}{{ links.links_for(page) }}{% endif %}
+	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/favicon.ico" sizes="16x16 24x24 32x32 48x48 64x64" />
+	<link rel="icon" type="image/png" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/favicon-16.png" sizes="16x16" />
+	<link rel="icon" type="image/png" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/favicon-24.png" sizes="24x24" />
+	<link rel="icon" type="image/png" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/favicon-32.png" sizes="32x32" />
+	<link rel="icon" type="image/png" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/favicon-48.png" sizes="48x48" />
+	<link rel="icon" type="image/png" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/favicon-64.png" sizes="64x64" />
+	<link rel="icon" type="image/png" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/favicon-96.png" sizes="96x96" />
+	<link rel="icon" type="image/png" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/favicon-128.png" sizes="128x128" />
+	<link rel="icon" type="image/png" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/favicon-196.png" sizes="196x196" />
+	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/apple-touch-icon-57x57.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="60x60" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/apple-touch-icon-60x60.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/apple-touch-icon-72x72.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/apple-touch-icon-76x76.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/apple-touch-icon-114x114.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/apple-touch-icon-120x120.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/apple-touch-icon-144x144.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/apple-touch-icon-152x152.png" />
+	<link rel="stylesheet" type="text/css" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/skin/style.css" />
+	<link rel="stylesheet" type="text/css" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/skin/syntax.css" />
+	<link rel="stylesheet" type="text/css" href="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/skin/print.css" media="print" />
+	<!--[if lt IE 9]><script type="text/javascript" src="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/scripts/html5.js"></script><![endif]-->
+	<!--script type="text/javascript" src="{{ SITEURL }}{% if THEME_STATIC_DIR %}/{{ THEME_STATIC_DIR }}{% endif %}/scripts/history.js"></script-->
+</head>
+<body typeof="{% block pagetype %}WebPage{% endblock %}">
+	<header id="top">
+		<section id="accessibility">
+			<a href="#main">{% if lang == 'nl' %}Direct naar inhoud van de pagina{% else %}Skip to page content{% endif %}</a>
+		</section>
+		<section class="container">
+			<a id="logo" href="{{ SITEURL }}/{{ lang }}">Tim<span>.</span>Wienk<span>.name</span></a>
+{% include 'components/menu.html' %}
+			<form role="search" id="search" method="get" action="https://duckduckgo.com/">
+				<label for="search_query">{% if lang == 'nl' %}Zoeken met DuckDuckGo{% else %}Search using DuckDuckGo{% endif %}</label>
+				<input type="hidden" name="sites" value="tim.wienk.name" />
+				<input type="hidden" name="ka" value="n" />
+				<input type="hidden" name="kc" value="-1" />
+				<input type="hidden" name="kd" value="-1" />
+				<input type="hidden" name="kf" value="w" />
+				<input type="hidden" name="kh" value="1" />
+				<input type="hidden" name="km" value="m" />
+				<input type="hidden" name="kn" value="-1" />
+				<input type="hidden" name="kp" value="-1" />
+				<input type="hidden" name="kt" value="n" />
+				<input type="hidden" name="kz" value="-1" />
+				<input type="hidden" name="kaf" value="1" />
+				<input type="hidden" name="k7" value="#ffffff" />
+				<input type="hidden" name="k8" value="#303030" />
+				<input type="hidden" name="k9" value="#303030" />
+				<input type="hidden" name="kj" value="#ffffff" />
+				<input type="hidden" name="kx" value="#2d72c8" />
+				<input type="hidden" name="kaa" value="#2c5f9d" />
+				<input type="hidden" name="ky" value="#ffffff" />
+				<input type="search" name="q" id="search_query" />
+				<button type="submit">{% if lang == 'nl' %}Zoeken{% else %}Search{% endif %}</button>
+			</form>
+{% import 'macros/translations.html' as translations with context %}
+{% if article %}{{ translations.translations_for(article) }}{% elif page %}{{ translations.translations_for(page) }}{% endif %}
+		</section>
+	</header>
+	<main id="main">
+{% block content %}
+{% endblock %}
+	</main>
+	<footer id="bottom">
+		<section class="container">
+{% if SOCIAL %}
+			<p id="other-places-description" class="description">{% if lang == 'nl' %}Andere plekken waar je mij vindt{% else %}Other places to find me{% endif %}:</p>
+			<ul aria-describedby="other-places-description">
+{% for soc in SOCIAL %}
+				<li>
+					<a href="{{ soc[1] }}">{{ soc[0] }}{% if soc[2] %} <span>{{ soc[2] }}</span>{% endif %}</a>
+				</li>
+{% endfor %}
+			</ul>
+{% endif %}
+			<p>{% if lang == 'nl' %}Hopelijk heb je een fijne dag.{% else %}Hope you're having a great day.{% endif %}</p>
+{% if AUTHOR %}
+{#
+			<p class="copyright">Copyright ©{% if FIRST_YEAR %} {{ FIRST_YEAR }} –{% endif %}{% if LAST_YEAR %} {{ LAST_YEAR }}{% endif %} <span property="author creator copyrightHolder">{{ AUTHOR }}</span>.<br />{% if lang == 'nl' %}Alle rechten voorbehouden, gelieve te vragen alvorens inhoud van deze pagina te gebruiken.{% else %}All rights reserved, please ask before using content of this page.{% endif %}</p>
+#}
+			<p class="copyright">Copyright ©{% if FIRST_YEAR %} {{ FIRST_YEAR }} –{% endif %}{% if LAST_YEAR %} {{ LAST_YEAR }}{% endif %} <span property="author creator copyrightHolder">{{ AUTHOR }}</span>.<br />{% if lang == 'nl' %}Gelieve te vragen alvorens inhoud van deze pagina te gebruiken.{% else %}Please ask before using content of this page.{% endif %}</p>
+{% endif %}
+		</section>
+	</footer>
+{% include 'components/analytics.html' %}
+</body>
+</html>

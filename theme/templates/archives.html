@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Articles - {{ SITENAME }}{% endblock %}
+{% block pagetype %}CollectionPage{% endblock %}
+{% block content %}
+		<section property="mainEntity" typeof="WebPageElement" class="container">
+			<header>
+				<h1 property="name headline">Articles</h1>
+				<p property="description">Possibly interesting articles, written by me</p>
+			</header>
+			<ul typeof="ItemList" class="{% if dates|length < 2 %}stub {% endif %}section">
+{% for article in dates %}
+				<li property="itemListElement" typeof="Article">
+					<meta property="inLanguage" content="{{ article.lang }}" />
+					<meta property="author creator copyrightHolder" content="{{ article.authors|join(', ')|escape }}" />
+					<time property="datePublished dateCreated dateModified" class="date" datetime="{{ article.date.date().isoformat() }}">{{ article.locale_date }}</time><span class="separator">,</span>
+					<span property="name headline" class="title"><a property="url mainEntityOfPage" href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></span>
+				</li>
+{% endfor %}
+			</ul>
+		</section>
+{% endblock %}

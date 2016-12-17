@@ -1,0 +1,16 @@
+a:hover, a:focus, a:active {
+	text-decoration: none;
+}
+#top nav, #bottom ul, #search, #language {
+	display: none;
+}
+#top {
+	height: 4em;
+	position: relative;
+}
+#logo {
+	width: 99%;
+}
+#main {
+	margin-top: 2.5em;
+}

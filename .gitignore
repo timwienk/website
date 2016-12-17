@@ -1,0 +1,7 @@
+[._]*.sw[a-p]
+[._]sw[a-p]
+*~
+*.py[cdo]
+__pycache__/
+/output/
+/content/data/*cache*

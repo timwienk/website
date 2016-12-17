@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{% if page.menu %}{{ page.menu }}{% else %}{{ page.title }}{% endif %} - {{ SITENAME }}{% endblock %}
+{% if contenttag is not defined %}{% set contenttag = 'section' %}{% endif %}
+{% block content %}
+		<{{ contenttag }} property="mainEntity" typeof="WebPageElement" class="container">
+{% block content_header %}
+			<header>
+				<h1 property="name headline"><a property="url mainEntityOfPage" href="{{ SITEURL }}/{{ page.url }}">{{ page.title }}</a></h1>
+{% if page.summary %}
+				<p property="description">{{ page.summary|striptags }}</p>
+{% endif %}
+			</header>
+{% endblock %}
+{% if page.content %}
+
+{{ page.content }}
+
+{% endif %}
+{% block content_footer %}
+{% endblock %}
+		</{{ contenttag }}>
+{% endblock %}

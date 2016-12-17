@@ -1,0 +1,27 @@
+{% extends "page.html" %}
+{% block pagetype %}CollectionPage{% endblock %}
+{% block content_footer %}
+			<ul typeof="ItemList" class="{% if dates|length < 2 %}stub {% endif %}section">
+{% for article in dates %}
+{% if article.lang == lang %}
+				<li property="itemListElement" typeof="Article">
+					<meta property="inLanguage" content="{{ article.lang }}" />
+					<meta property="author creator copyrightHolder" content="{{ article.authors|join(', ')|escape }}" />
+					<time property="datePublished dateCreated dateModified" class="date" datetime="{{ article.date.date().isoformat() }}">{{ article.locale_date }}</time><span class="separator">,</span>
+					<span property="name headline" class="title"><a property="url mainEntityOfPage" href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></span>
+				</li>
+{% elif article.translations %}
+{% for translation in article.translations %}
+{% if translation.lang == lang %}
+				<li property="itemListElement" typeof="Article">
+					<meta property="inLanguage" content="{{ article.lang }}" />
+					<meta property="author creator copyrightHolder" content="{{ article.authors|join(', ')|escape }}" />
+					<time property="datePublished dateCreated dateModified" class="date" datetime="{{ translation.date.date().isoformat() }}">{{ translation.locale_date }}</time><span class="separator">,</span>
+					<span property="name headline" class="title"><a property="url mainEntityOfPage" href="{{ SITEURL }}/{{ translation.url }}">{{ translation.title }}</a></span>
+				</li>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+			</ul>
+{% endblock %}

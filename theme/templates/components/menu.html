@@ -1,0 +1,34 @@
+			<nav typeof="SiteNavigationElement">
+				<ul class="menu">
+{% for title, link in MENUITEMS %}
+					<li>
+						<a href="{{ link }}">{{ title }}</a>
+					</li>
+{% endfor %}
+{% if DISPLAY_PAGES_ON_MENU %}
+{% for pg in pages|selectattr('order')|sort(attribute='order') %}
+{% if pg.lang == lang %}
+					<li{% if pg == page or article and article.url == pg.url + '/' + article.slug %} class="active"{% endif %}>
+						<a{% if pg.template == 'page_home' %} rel="home"{% endif %} href="{{ SITEURL }}/{{ pg.url }}">{% if pg.menu %}{{ pg.menu }}{% else %}{{ pg.title }}{% endif %}</a>
+					</li>
+{% elif pg.translations %}
+{% for pgt in pg.translations %}
+{% if pgt.lang == lang %}
+					<li{% if pgt == page or article and article.url == pgt.url + '/' + article.slug %} class="active"{% endif %}>
+						<a{% if pg.template == 'page_home' %} rel="home"{% endif %} href="{{ SITEURL }}/{{ pgt.url }}">{% if pgt.menu %}{{ pgt.menu }}{% else %}{{ pgt.title }}{% endif %}</a>
+					</li>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if DISPLAY_CATEGORIES_ON_MENU %}
+{% for cat, null in categories %}
+					<li{% if cat == category %} class="active"{% endif %}>
+						<a href="{{ SITEURL }}/{{ cat.url }}">{{ cat }}</a>
+					</li>
+{% endfor %}
+{% endif %}
+				</ul>
+			</nav>
+
