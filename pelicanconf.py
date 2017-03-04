@@ -84,11 +84,11 @@ JINJA_ENVIRONMENT = {
 	'extensions': ['jinja2.ext.i18n'],
 }
 
-FEED_ALL_ATOM = None #'atom.xml'
+FEED_ALL_ATOM = 'atom.xml'
 CATEGORY_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
-TRANSLATION_FEED_ATOM = None #'%s/atom.xml'
+TRANSLATION_FEED_ATOM = '%s/atom.xml'
 
 SITEMAP = {
 	'format': 'xml',
